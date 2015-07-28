@@ -1,11 +1,10 @@
-function [model, hat_y_t, l_t] = PA(y_t, x_t, model)
-% PA: Passive-Aggressive (PA) learning algorithms
+function [model, hat_y_t, l_t] = CW(y_t, x_t, model)
+% CW: Confidence Weighted Online Leanring Algorithm 
 %--------------------------------------------------------------------------
 % Reference:
-% - Koby Crammer, Ofer Dekel, Joseph Keshet, Shai Shalev-Shwartz, and Yoram
-% Singer. Online passive-aggressive algorithms. JMLR, 7:551?85, 2006.
+% Exact Convex Confidence-Weighted Learning, Koby Crammer, Mark Dredze and
+% Fernando Pereira, NIPS, 2008.
 %--------------------------------------------------------------------------
-% INPUT:
 %      y_t:     class label of t-th instance;
 %      x_t:     t-th training data instance, e.g., X(t,:);
 %    model:     classifier
@@ -22,6 +21,12 @@ function [model, hat_y_t, l_t] = PA(y_t, x_t, model)
 % Initialization
 %--------------------------------------------------------------------------
 w     = model.w;
+Sigma = model.Sigma;
+%eta   = model.eta;       % parameter of CW
+%phi   = norminv(eta,0,1);% should use the inverse of normal function
+phi   = model.phi;
+psi   = 1+(phi^2)/2;
+xi    = 1+phi^2;
 %--------------------------------------------------------------------------
 % Prediction
 %--------------------------------------------------------------------------
@@ -34,14 +39,19 @@ end
 %--------------------------------------------------------------------------
 % Making Update
 %--------------------------------------------------------------------------
-l_t = max(0,1-y_t*f_t);
-if (l_t > 0)
-    s_t = norm(x_t)^2;
-    if (s_t > 0),
-        gamma_t = l_t/s_t; %gamma_t = min(C,l_t/s_t);(PA-I)
-    else
-        gamma_t = 1; % special case when all x goes zero.
-    end
-    model.w = w + gamma_t*y_t*x_t;
+v_t = x_t*Sigma*x_t';       % confidence
+m_t = y_t*f_t;              % margin
+l_t = phi*sqrt(v_t)-m_t;    % loss
+if l_t > 0,
+    alpha_t = max(0,(-m_t*psi+sqrt((m_t^2*phi^4)/4+v_t*phi^2*xi))/(v_t*xi));
+    u_t     = 0.25*(-alpha_t*v_t*phi+sqrt(alpha_t^2*v_t^2*phi^2+4*v_t))^2;
+    beta_t  = alpha_t*phi/(sqrt(u_t)+alpha_t*phi*v_t);
+    S_x_t   = x_t*Sigma';
+    w       = w + alpha_t*y_t*S_x_t;
+    Sigma   = Sigma - beta_t*S_x_t'*S_x_t;     
+%    w       = w + (alpha_t*y_t*Sigma*x_t')';
+%    Sigma   = Sigma - beta_t*Sigma*x_t'*x_t*Sigma;
 end
+model.w     = w;
+model.Sigma = Sigma;
 %THE END

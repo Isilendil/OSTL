@@ -1,9 +1,9 @@
-function [model, hat_y_t, l_t] = PA1(y_t, x_t, model)
-% PA1: Passive-Aggressive (PA) learning algorithms (PA-I variant)
+function [model, hat_y_t, l_t] = NHERD(y_t, x_t, model)
+% NHERD: Normal Herd (NHERD) algorithm
 %--------------------------------------------------------------------------
 % Reference:
-% - Koby Crammer, Ofer Dekel, Joseph Keshet, Shai Shalev-Shwartz, and Yoram
-% Singer. Online passive-aggressive algorithms. JMLR, 7:551?85, 2006.
+% Crammer, Koby and D. Lee, Daniel. Learning via gaussian herding. In NIPS,
+% pp. 345?52, 2010. 
 %--------------------------------------------------------------------------
 % INPUT:
 %      y_t:     class label of t-th instance;
@@ -22,11 +22,12 @@ function [model, hat_y_t, l_t] = PA1(y_t, x_t, model)
 % Initialization
 %--------------------------------------------------------------------------
 w     = model.w;
-C     = model.C;
+Sigma = model.Sigma;
+gamma = model.gamma;
 %--------------------------------------------------------------------------
 % Prediction
 %--------------------------------------------------------------------------
-f_t = w*x_t';
+f_t     = w*x_t';
 if (f_t>=0)
     hat_y_t = 1;
 else
@@ -35,11 +36,18 @@ end
 %--------------------------------------------------------------------------
 % Making Update
 %--------------------------------------------------------------------------
-l_t = max(0,1-y_t*f_t);
-if (l_t > 0)
-    s_t     = norm(x_t)^2;
-    gamma_t = min(C,l_t/s_t); % PA-I
-    w       = w + gamma_t*y_t*x_t;
+v_t = x_t*Sigma*x_t';   % confidence
+m_t = y_t*f_t;          % margin
+l_t = 1 - m_t;          % loss
+if l_t > 0,
+    beta_t  = 1/(v_t + gamma); % gamma = 1/C
+    alpha_t = max(0,1-m_t)*beta_t;
+    S_x_t   = x_t*Sigma';
+    w       = w + alpha_t*y_t*S_x_t;
+    Sigma   = Sigma - beta_t^2*(v_t+2*gamma)*S_x_t'*S_x_t;   
+%    w       = w + (alpha_t*y_t*Sigma*x_t')';
+%    Sigma   = Sigma - beta_t^2*(v_t+2*gamma)*Sigma*x_t'*x_t*Sigma; %project
 end
-model.w = w;
+model.w     = w;
+model.Sigma = Sigma;
 %THE END
