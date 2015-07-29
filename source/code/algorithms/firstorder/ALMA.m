@@ -3,6 +3,7 @@ function [classifier, error_count, run_time, mistakes] = PA(Y, Kernel, options, 
 t_tick = options.t_tick;
 
 C = sqrt(2);
+C = options.C;
 A = 0.9;
 B = 1 / A;
 p = 2;

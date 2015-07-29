@@ -6,7 +6,7 @@ ID = id_list;
 error_count = 0;
 mistakes = [];
 
-C = 1;
+C = options.C;
 A = 1;
 Sigma = A * eye(size(X,2));
 seed = 0.9;

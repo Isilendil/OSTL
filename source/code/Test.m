@@ -1,4 +1,4 @@
-function  Experiment(data_file)
+function  Test(data_file)
 % Experiment: the main function used to compare all the online
 % algorithms
 %--------------------------------------------------------------------------
@@ -24,6 +24,8 @@ similarity_method = 'pearson';
 load(sprintf('../data/textimage/original/%d', data_file));
 load('../data/textimage/ID');
 load(sprintf('../data/textimage/similarity/%s/%d', similarity_method, data_file));
+%load(sprintf('../data/%s_ID', data_file));
+%load(sprintf('../data/testimage/%s', data_file));
 
 sim_matrix = ctt';
 
@@ -40,7 +42,7 @@ data_X = [data_X; co_text_fea];
 options.C = 1;
 options.sigma = 1;
 options.t_tick = round(size(ID,2)/10);
-options.K = 10;
+options.K = 5;
 options.m = m;
 options.eta = 0.001;
 
@@ -192,21 +194,21 @@ for i=1:size(ID,1),
 			%case 1
     %[classifier, err_count, run_time, mistakes] = PA_II(data_Y, data_kernel, options, id_list);
 		  %case 0
-    [classifier, err_count, run_time, mistakes] = SOP_linear(data_Y, data_X, options, id_list);
+    %[classifier, err_count, run_time, mistakes] = SOP_linear(data_Y, data_X, options, id_list);
 		%end
-		error_SOP(i) = err_count;
-		time_SOP(i) = run_time;
-		mistakes_list_SOP(i,:) = mistakes;
+		%error_SOP(i) = err_count;
+		%time_SOP(i) = run_time;
+		%mistakes_list_SOP(i,:) = mistakes;
 
 		%switch kernel_or_not
 			%case 1
     %[classifier, err_count, run_time, mistakes] = PA_II_OGD(data_Y, data_kernel, sim_matrix, options, id_list);
 		  %case 0
-    [classifier, err_count, run_time, mistakes] = SOP_OGD_linear(data_Y, data_X, sim_matrix, options, id_list);
+    %[classifier, err_count, run_time, mistakes] = SOP_OGD_linear(data_Y, data_X, sim_matrix, options, id_list);
 		%end
-		error_SOP_OGD(i) = err_count;
-		time_SOP_OGD(i) = run_time;
-		mistakes_list_SOP_OGD(i,:) = mistakes;
+		%error_SOP_OGD(i) = err_count;
+		%time_SOP_OGD(i) = run_time;
+		%mistakes_list_SOP_OGD(i,:) = mistakes;
 
 		%9. CW
 		%switch kernel_or_not
@@ -276,42 +278,42 @@ for i=1:size(ID,1),
 			%case 1
     %[classifier, err_count, run_time, mistakes] = AROW(data_Y, data_kernel, options, id_list);
 		  %case 0
-    [classifier, err_count, run_time, mistakes] = AROW_linear(data_Y, data_X, options, id_list);
+    %[classifier, err_count, run_time, mistakes] = AROW_linear(data_Y, data_X, options, id_list);
 		%end
-		error_AROW(i) = err_count;
-		time_AROW(i) = run_time;
-		mistakes_list_AROW(i,:) = mistakes;
+		%error_AROW(i) = err_count;
+		%time_AROW(i) = run_time;
+		%mistakes_list_AROW(i,:) = mistakes;
 
 		%switch kernel_or_not
 			%case 1
     %[classifier, err_count, run_time, mistakes] = AROW_OGD(data_Y, data_kernel, sim_matrix, options, id_list);
 		  %case 0
-    [classifier, err_count, run_time, mistakes] = AROW_OGD_linear(data_Y, data_X, sim_matrix, options, id_list);
+    %[classifier, err_count, run_time, mistakes] = AROW_OGD_linear(data_Y, data_X, sim_matrix, options, id_list);
 		%end
-		error_AROW_OGD(i) = err_count;
-		time_AROW_OGD(i) = run_time;
-		mistakes_list_AROW_OGD(i,:) = mistakes;
+		%error_AROW_OGD(i) = err_count;
+		%time_AROW_OGD(i) = run_time;
+		%mistakes_list_AROW_OGD(i,:) = mistakes;
 
 		%13. NAROW
 		%switch kernel_or_not
 			%case 1
     %[classifier, err_count, run_time, mistakes] = NAROW(data_Y, data_kernel, options, id_list);
 		  %case 0
-    [classifier, err_count, run_time, mistakes] = NAROW_linear(data_Y, data_X, options, id_list);
+    %[classifier, err_count, run_time, mistakes] = NAROW_linear(data_Y, data_X, options, id_list);
 		%end
-		error_NAROW(i) = err_count;
-		time_NAROW(i) = run_time;
-		mistakes_list_NAROW(i,:) = mistakes;
+		%error_NAROW(i) = err_count;
+		%time_NAROW(i) = run_time;
+		%mistakes_list_NAROW(i,:) = mistakes;
 
 		%switch kernel_or_not
 			%case 1
     %[classifier, err_count, run_time, mistakes] = NAROW_OGD(data_Y, data_kernel, sim_matrix, options, id_list);
 		  %case 0
-    [classifier, err_count, run_time, mistakes] = NAROW_OGD_linear(data_Y, data_X, sim_matrix, options, id_list);
+    %[classifier, err_count, run_time, mistakes] = NAROW_OGD_linear(data_Y, data_X, sim_matrix, options, id_list);
 		%end
-		error_NAROW_OGD(i) = err_count;
-		time_NAROW_OGD(i) = run_time;
-		mistakes_list_NAROW_OGD(i,:) = mistakes;
+		%error_NAROW_OGD(i) = err_count;
+		%time_NAROW_OGD(i) = run_time;
+		%mistakes_list_NAROW_OGD(i,:) = mistakes;
 
 
 		%14. NHERD
@@ -319,21 +321,21 @@ for i=1:size(ID,1),
 			%case 1
     %[classifier, err_count, run_time, mistakes] = NHERD(data_Y, data_kernel, options, id_list);
 		  %case 0
-    [classifier, err_count, run_time, mistakes] = NHERD_linear(data_Y, data_X, options, id_list);
+    %[classifier, err_count, run_time, mistakes] = NHERD_linear(data_Y, data_X, options, id_list);
 		%end
-		error_NHERD(i) = err_count;
-		time_NHERD(i) = run_time;
-		mistakes_list_NHERD(i,:) = mistakes;
+		%error_NHERD(i) = err_count;
+		%5time_NHERD(i) = run_time;
+		%mistakes_list_NHERD(i,:) = mistakes;
 
 		%switch kernel_or_not
 			%case 1
     %[classifier, err_count, run_time, mistakes] = NHERD_OGD(data_Y, data_kernel, sim_matrix, options, id_list);
 		  %case 0
-    [classifier, err_count, run_time, mistakes] = NHERD_OGD_linear(data_Y, data_X, sim_matrix, options, id_list);
+    %[classifier, err_count, run_time, mistakes] = NHERD_OGD_linear(data_Y, data_X, sim_matrix, options, id_list);
 		%end
-		error_NHERD_OGD(i) = err_count;
-		time_NHERD_OGD(i) = run_time;
-		mistakes_list_NHERD_OGD(i,:) = mistakes;
+		%error_NHERD_OGD(i) = err_count;
+		%time_NHERD_OGD(i) = run_time;
+		%mistakes_list_NHERD_OGD(i,:) = mistakes;
 
 
 		%15. IELLIP
@@ -341,28 +343,28 @@ for i=1:size(ID,1),
 			%case 1
     %[classifier, err_count, run_time, mistakes] = IELLIP(data_Y, data_kernel, options, id_list);
 		  %case 0
-    [classifier, err_count, run_time, mistakes] = IELLIP_linear(data_Y, data_X, options, id_list);
+    %[classifier, err_count, run_time, mistakes] = IELLIP_linear(data_Y, data_X, options, id_list);
 		%end
-		error_IELLIP(i) = err_count;
-		time_IELLIP(i) = run_time;
-		mistakes_list_IELLIP(i,:) = mistakes;
+		%error_IELLIP(i) = err_count;
+		%time_IELLIP(i) = run_time;
+		%mistakes_list_IELLIP(i,:) = mistakes;
 
 		%switch kernel_or_not
 			%case 1
     %[classifier, err_count, run_time, mistakes] = IELLIP_OGD(data_Y, data_kernel, sim_matrix, options, id_list);
 		  %case 0
-    [classifier, err_count, run_time, mistakes] = IELLIP_OGD_linear(data_Y, data_X, sim_matrix, options, id_list);
+    %[classifier, err_count, run_time, mistakes] = IELLIP_OGD_linear(data_Y, data_X, sim_matrix, options, id_list);
 		%end
-		error_IELLIP_OGD(i) = err_count;
-		time_IELLIP_OGD(i) = run_time;
-		mistakes_list_IELLIP_OGD(i,:) = mistakes;
+		%error_IELLIP_OGD(i) = err_count;
+		%time_IELLIP_OGD(i) = run_time;
+		%mistakes_list_IELLIP_OGD(i,:) = mistakes;
 
 
 end
 
 
 stat_file = sprintf('../stat/%s/%d-stat', similarity_method, data_file);
-save(stat_file, 'error_Perceptron', 'time_Perceptron', 'mistakes_list_Perceptron', 'error_OGD', 'time_OGD', 'mistakes_list_OGD', 'error_PA', 'time_PA', 'mistakes_list_PA', 'error_PA_I', 'time_PA_I', 'mistakes_list_PA_I', 'error_PA_II', 'time_PA_II', 'mistakes_list_PA_II', 'error_Perceptron_OGD', 'time_Perceptron_OGD', 'mistakes_list_Perceptron_OGD', 'error_OGD_OGD', 'time_OGD_OGD', 'mistakes_list_OGD_OGD', 'error_PA_OGD', 'time_PA_OGD', 'mistakes_list_PA_OGD', 'error_PA_I_OGD', 'time_PA_I_OGD', 'mistakes_list_PA_I_OGD', 'error_PA_II_OGD', 'time_PA_II_OGD', 'mistakes_list_PA_II_OGD', 'error_SOP', 'time_SOP', 'mistakes_list_SOP','error_CW', 'time_CW', 'mistakes_list_CW','error_AROW', 'time_AROW', 'mistakes_list_AROW','error_NAROW', 'time_NAROW', 'mistakes_list_NAROW','error_NHERD', 'time_NHERD', 'mistakes_list_NHERD','error_IELLIP', 'time_IELLIP', 'mistakes_list_IELLIP','error_SCW', 'time_SCW', 'mistakes_list_SCW','error_SCW2', 'time_SCW2', 'mistakes_list_SCW2','error_SOP_OGD', 'time_SOP_OGD', 'mistakes_list_SOP_OGD','error_CW_OGD', 'time_CW_OGD', 'mistakes_list_CW_OGD','error_AROW_OGD', 'time_AROW_OGD', 'mistakes_list_AROW_OGD','error_NAROW_OGD', 'time_NAROW_OGD', 'mistakes_list_NAROW_OGD','error_NHERD_OGD', 'time_NHERD_OGD', 'mistakes_list_NHERD_OGD','error_IELLIP_OGD', 'time_IELLIP_OGD', 'mistakes_list_IELLIP_OGD','error_SCW_OGD', 'time_SCW_OGD', 'mistakes_list_SCW_OGD','error_SCW2_OGD', 'time_SCW2_OGD', 'mistakes_list_SCW2_OGD');
+save(stat_file, 'error_Perceptron', 'time_Perceptron', 'mistakes_list_Perceptron', 'error_OGD', 'time_OGD', 'mistakes_list_OGD', 'error_PA', 'time_PA', 'mistakes_list_PA', 'error_PA_I', 'time_PA_I', 'mistakes_list_PA_I', 'error_PA_II', 'time_PA_II', 'mistakes_list_PA_II', 'error_Perceptron_OGD', 'time_Perceptron_OGD', 'mistakes_list_Perceptron_OGD', 'error_OGD_OGD', 'time_OGD_OGD', 'mistakes_list_OGD_OGD', 'error_PA_OGD', 'time_PA_OGD', 'mistakes_list_PA_OGD', 'error_PA_I_OGD', 'time_PA_I_OGD', 'mistakes_list_PA_I_OGD', 'error_PA_II_OGD', 'time_PA_II_OGD', 'mistakes_list_PA_II_OGD', 'error_CW', 'time_CW', 'mistakes_list_CW' ,'error_SCW', 'time_SCW', 'mistakes_list_SCW','error_SCW2', 'time_SCW2', 'mistakes_list_SCW2','error_CW_OGD', 'time_CW_OGD', 'mistakes_list_CW_OGD','error_SCW_OGD', 'time_SCW_OGD', 'mistakes_list_SCW_OGD','error_SCW2_OGD', 'time_SCW2_OGD', 'mistakes_list_SCW2_OGD');
   %'error_ALMA', 'time_ALMA', 'mistakes_list_ALMA',
   %'error_ROMMA', 'time_ROMMA', 'mistakes_list_ROMMA',
 
@@ -378,20 +380,10 @@ fprintf(1,'PA-I \t %.4f %.4f \t %.4f %.4f\n', mean(error_PA_I)/m*100,  std(error
 fprintf(1,'PA-I-OGD \t %.4f %.4f \t %.4f %.4f\n', mean(error_PA_I_OGD)/m*100,  std(error_PA_I_OGD)/m*100, mean(time_PA_I_OGD)/m*100, std(time_PA_I_OGD));
 fprintf(1,'PA-II \t %.4f %.4f \t %.4f %.4f\n', mean(error_PA_II)/m*100,  std(error_PA_II)/m*100, mean(time_PA_II)/m*100, std(time_PA_II));
 fprintf(1,'PA-II-OGD \t %.4f %.4f \t %.4f %.4f\n', mean(error_PA_II_OGD)/m*100,  std(error_PA_II_OGD)/m*100, mean(time_PA_II_OGD)/m*100, std(time_PA_II_OGD));
-fprintf(1,'SOP \t %.4f %.4f \t %.4f %.4f\n', mean(error_SOP)/m*100,  std(error_SOP)/m*100, mean(time_SOP)/m*100, std(time_SOP));
 fprintf(1,'CW \t %.4f %.4f \t %.4f %.4f\n', mean(error_CW)/m*100,  std(error_CW)/m*100, mean(time_CW)/m*100, std(time_CW));
-fprintf(1,'AROW \t %.4f %.4f \t %.4f %.4f\n', mean(error_AROW)/m*100,  std(error_AROW)/m*100, mean(time_AROW)/m*100, std(time_AROW));
-fprintf(1,'NAROW \t %.4f %.4f \t %.4f %.4f\n', mean(error_NAROW)/m*100,  std(error_NAROW)/m*100, mean(time_NAROW)/m*100, std(time_NAROW));
-fprintf(1,'NHERD \t %.4f %.4f \t %.4f %.4f\n', mean(error_NHERD)/m*100,  std(error_NHERD)/m*100, mean(time_NHERD)/m*100, std(time_NHERD));
-fprintf(1,'IELLIP \t %.4f %.4f \t %.4f %.4f\n', mean(error_IELLIP)/m*100,  std(error_IELLIP)/m*100, mean(time_IELLIP)/m*100, std(time_IELLIP));
 fprintf(1,'SCW \t %.4f %.4f \t %.4f %.4f\n', mean(error_SCW)/m*100,  std(error_SCW)/m*100, mean(time_SCW)/m*100, std(time_SCW));
 fprintf(1,'SCW2 \t %.4f %.4f \t %.4f %.4f\n', mean(error_SCW2)/m*100,  std(error_SCW2)/m*100, mean(time_SCW2)/m*100, std(time_SCW2));
-fprintf(1,'SOP_OGD \t %.4f %.4f \t %.4f %.4f\n', mean(error_SOP_OGD)/m*100,  std(error_SOP_OGD)/m*100, mean(time_SOP_OGD)/m*100, std(time_SOP_OGD));
 fprintf(1,'CW_OGD \t %.4f %.4f \t %.4f %.4f\n', mean(error_CW_OGD)/m*100,  std(error_CW_OGD)/m*100, mean(time_CW_OGD)/m*100, std(time_CW_OGD));
-fprintf(1,'AROW_OGD \t %.4f %.4f \t %.4f %.4f\n', mean(error_AROW_OGD)/m*100,  std(error_AROW_OGD)/m*100, mean(time_AROW_OGD)/m*100, std(time_AROW_OGD));
-fprintf(1,'NAROW_OGD \t %.4f %.4f \t %.4f %.4f\n', mean(error_NAROW_OGD)/m*100,  std(error_NAROW_OGD)/m*100, mean(time_NAROW_OGD)/m*100, std(time_NAROW_OGD));
-fprintf(1,'NHERD_OGD \t %.4f %.4f \t %.4f %.4f\n', mean(error_NHERD_OGD)/m*100,  std(error_NHERD_OGD)/m*100, mean(time_NHERD_OGD)/m*100, std(time_NHERD_OGD));
-fprintf(1,'IELLIP_OGD \t %.4f %.4f \t %.4f %.4f\n', mean(error_IELLIP_OGD)/m*100,  std(error_IELLIP_OGD)/m*100, mean(time_IELLIP_OGD)/m*100, std(time_IELLIP_OGD));
 fprintf(1,'SCW_OGD \t %.4f %.4f \t %.4f %.4f\n', mean(error_SCW_OGD)/m*100,  std(error_SCW_OGD)/m*100, mean(time_SCW_OGD)/m*100, std(time_SCW_OGD));
 fprintf(1,'SCW2_OGD \t %.4f %.4f \t %.4f %.4f\n', mean(error_SCW2_OGD)/m*100,  std(error_SCW2_OGD)/m*100, mean(time_SCW2_OGD)/m*100, std(time_SCW2_OGD));
 fprintf(1,'-------------------------------------------------------------------------------\n');
